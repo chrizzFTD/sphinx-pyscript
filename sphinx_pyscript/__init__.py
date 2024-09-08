@@ -46,7 +46,6 @@ class PyConfig(SphinxDirective):
 
     def run(self):
         """Parse the config"""
-        print(f"READING {self}, {self.content=}")
         if self.content:
             try:
                 config = yaml.safe_load("\n".join(self.content))
@@ -55,7 +54,6 @@ class PyConfig(SphinxDirective):
         else:
             config = {}
         self.env.metadata[self.env.docname]["py-config"] = json.dumps(config)
-        print(f"{self.env.metadata[self.env.docname]["py-config"]=}")
         return []
 
 
@@ -114,9 +112,6 @@ class PyEditor(SphinxDirective):
             attrs += "setup"
         if self.content:
             code = "\n".join(self.content)
-        print('------------------------')
-        print(f'<script type="py-editor" {attrs}>\n{code}\n</script>\n')
-        print('~~~~~~~~~~~~~~~~~~~~~~~~')
         return [
             nodes.raw(
                 "",
@@ -176,9 +171,6 @@ def doctree_read(app: Sphinx, doctree: nodes.document):
                     format="html",
                 )
             )
-            print("!!!!!!!!!!!!!!!!!!")
-            print(f'<py-config type="json">\n{data_str}\n</py-config>\n')
-            print("@@@@@@@@@@@@@@@@@@")
 
 
 def copy_asset_files(app, _):
@@ -188,5 +180,4 @@ def copy_asset_files(app, _):
         copy_asset_file(str(custom_file), str(static_dir))
         config_file = Path(app.builder.srcdir) / "pyscript.toml"
         if config_file.exists():
-            print(f"--------->>>>>>>>> COPYING {config_file}")
             copy_asset_file(str(config_file), static_dir)
