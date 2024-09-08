@@ -186,3 +186,7 @@ def copy_asset_files(app, _):
         custom_file = (Path(__file__).parent / "mini-coi.js").absolute()
         static_dir = (Path(app.builder.outdir)).absolute()
         copy_asset_file(str(custom_file), str(static_dir))
+        config_file = Path(app.builder.srcdir) / "pyscript.toml"
+        if config_file.exists():
+            print(f"--------->>>>>>>>> COPYING {config_file}")
+            copy_asset_file(str(config_file), static_dir)
